@@ -105,7 +105,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1698685152991</updated>
-      <workItem from="1698685154075" duration="1681000" />
+      <workItem from="1698685154075" duration="2013000" />
     </task>
     <servers />
   </component>
@@ -125,5 +125,24 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Greenhouse.API/Profiles/Controllers/CompaniesController.cs</url>
+          <line>18</line>
+          <properties documentPath="C:\Users\Jessica Elizabeth\Documents\GitHub\integradis_web\Greenhouse.API\Greenhouse.API\Profiles\Controllers\CompaniesController.cs" initialLine="18" containingFunctionPresentation="Constructor 'CompaniesController'">
+            <startOffsets>
+              <option value="553" />
+            </startOffsets>
+            <endOffsets>
+              <option value="554" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
