@@ -10,4 +10,4 @@ public class SaveCompanyResource
     
     [Required]
     public long Tin { get; set; }
-}"feat(Company): Added CompanyResource and SaveCompanyResource classes for defining data transfer objects."
+}
