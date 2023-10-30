@@ -9,24 +9,13 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.6.23329.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-preview.6.23329.4" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.3.23174.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-preview.3.23174.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="2.0.0-preview1-final" />
         <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="greenhouse\application\internal\" />
-      <Folder Include="greenhouse\domain\exceptions\" />
-      <Folder Include="greenhouse\domain\model\aggregates\" />
-      <Folder Include="greenhouse\domain\model\commands\" />
-      <Folder Include="greenhouse\domain\model\entities\" />
-      <Folder Include="greenhouse\domain\model\valueobjects\" />
-      <Folder Include="greenhouse\domain\services\" />
-      <Folder Include="greenhouse\infrastructure\repositories\" />
-      <Folder Include="shared\domain\model\entities\" />
-    </ItemGroup>
 
 </Project>
