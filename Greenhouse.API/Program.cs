@@ -1,3 +1,16 @@
+using Greenhouse.API.Crops.Domain.Repositories;
+using Greenhouse.API.Crops.Domain.Services;
+using Greenhouse.API.Crops.Persistence.Repositories;
+using Greenhouse.API.Crops.Services;
+using Greenhouse.API.Profiles.Domain.Repositories;
+using Greenhouse.API.Profiles.Domain.Services;
+using Greenhouse.API.Profiles.Persistence.Repositories;
+using Greenhouse.API.Profiles.Services;
+using Greenhouse.API.Shared.Domain.Repositories;
+using Greenhouse.API.Shared.Persistence.Contexts;
+using Greenhouse.API.Shared.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,14 +20,74 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add Database Connection
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(
+    options => options.UseMySQL(connectionString)
+        .LogTo(Console.WriteLine, LogLevel.Information)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors());
+
+// Add lowercase routes
+
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+// Dependency Injection Configuration
+
+// Crop
+builder.Services.AddScoped<ICropRepository,CropRepository>();
+builder.Services.AddScoped<ICropService, CropService>();
+// Crop phase
+builder.Services.AddScoped<IPhaseRepository,PhaseRepository>();
+builder.Services.AddScoped<IPhaseService, PhaseService>();
+// Formula
+builder.Services.AddScoped<IFormulaRepository,FormulaRepository>();
+builder.Services.AddScoped<IFormulaService, FormulaService>();
+// Preparation Area
+builder.Services.AddScoped<IPreparationAreaRepository,PreparationAreaRepository>();
+builder.Services.AddScoped<IPreparationAreaService, PreparationAreaService>();
+// Bunker
+builder.Services.AddScoped<IBunkerRepository,BunkerRepository>();
+builder.Services.AddScoped<IBunkerService, BunkerService>();
+// Tunnel
+builder.Services.AddScoped<ITunnelRepository,TunnelRepository>();
+builder.Services.AddScoped<ITunnelService, TunnelService>();
+// Grow Room Record
+builder.Services.AddScoped<IGrowRoomRecordRepository, GrowRoomRecordRepository>();
+builder.Services.AddScoped<IGrowRoomRecordService, GrowRoomRecordService>();
+
+// Company
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+// Employee
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// AutoMapper Configuration
+
+builder.Services.AddAutoMapper(
+    typeof(Greenhouse.API.Crops.Mapping.ModelToResourceProfile),
+    typeof(Greenhouse.API.Crops.Mapping.ResourceToModelProfile),
+    typeof(Greenhouse.API.Profiles.Mapping.ModelToResourceProfile),
+    typeof(Greenhouse.API.Profiles.Mapping.ResourceToModelProfile));
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Validation for ensuring Database Objects are created
+
+using (var scope = app.Services.CreateScope())
+using (var context = scope.ServiceProvider.GetService<AppDbContext>())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    context.Database.EnsureCreated();
 }
+
+// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
