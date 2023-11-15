@@ -6,6 +6,10 @@ using Greenhouse.API.Profiles.Domain.Repositories;
 using Greenhouse.API.Profiles.Domain.Services;
 using Greenhouse.API.Profiles.Persistence.Repositories;
 using Greenhouse.API.Profiles.Services;
+using Greenhouse.API.Security.Domain.Repositories;
+using Greenhouse.API.Security.Domain.Services;
+using Greenhouse.API.Security.Persistence.Repositories;
+using Greenhouse.API.Security.Services;
 using Greenhouse.API.Shared.Domain.Repositories;
 using Greenhouse.API.Shared.Persistence.Contexts;
 using Greenhouse.API.Shared.Persistence.Repositories;
@@ -33,6 +37,9 @@ builder.Services.AddDbContext<AppDbContext>(
 // Add lowercase routes
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+//Shared Injection Configuration
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Dependency Injection Configuration
 
@@ -64,7 +71,10 @@ builder.Services.AddScoped<ICompanyService, CompanyService>();
 // Employee
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Security Injection Configuration
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // AutoMapper Configuration
 
@@ -72,7 +82,10 @@ builder.Services.AddAutoMapper(
     typeof(Greenhouse.API.Crops.Mapping.ModelToResourceProfile),
     typeof(Greenhouse.API.Crops.Mapping.ResourceToModelProfile),
     typeof(Greenhouse.API.Profiles.Mapping.ModelToResourceProfile),
-    typeof(Greenhouse.API.Profiles.Mapping.ResourceToModelProfile));
+    typeof(Greenhouse.API.Profiles.Mapping.ResourceToModelProfile),
+    typeof(Greenhouse.API.Security.Mapping.ModelToResourceProfile),
+    typeof(Greenhouse.API.Security.Mapping.ResourceToModelProfile)
+    );
 
 var app = builder.Build();
 
