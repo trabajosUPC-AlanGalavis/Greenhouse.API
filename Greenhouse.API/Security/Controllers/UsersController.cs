@@ -3,7 +3,7 @@ using Greenhouse.API.Security.Domain.Models;
 using Greenhouse.API.Security.Domain.Services;
 using Greenhouse.API.Security.Domain.Services.Communication;
 using Greenhouse.API.Security.Resources;
-using Microsoft.AspNetCore.Authorization;
+using Greenhouse.API.Security.Authorization.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Greenhouse.API.Security.Controllers;

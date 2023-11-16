@@ -24,10 +24,6 @@
 
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Security\Authorization\" />
-    </ItemGroup>
-
 
 
 

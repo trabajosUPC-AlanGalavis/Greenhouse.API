@@ -5,10 +5,10 @@ namespace Greenhouse.API.Security.Domain.Services;
 
 public interface IUserService
 {
-    Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
+    Task<AuthenticateResponse> Authenticate(AuthenticateRequest request);
     Task<IEnumerable<User>> ListAsync();
     Task<User> GetByIdAsync(int id);
-    Task RegisterAsync(RegisterRequest model);
-    Task UpdateAsync(int id, UpdateRequest model);
+    Task RegisterAsync(RegisterRequest request);
+    Task UpdateAsync(int id, UpdateRequest request);
     Task DeleteAsync(int id);
 }
