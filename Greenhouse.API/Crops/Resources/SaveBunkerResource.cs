@@ -23,8 +23,5 @@ public class SaveBunkerResource
     public string Comment { get; set; }
     
     [Required]
-    public int CropId { get; set; }
-    
-    [Required]
     public int EmployeeId { get; set; }
 }
