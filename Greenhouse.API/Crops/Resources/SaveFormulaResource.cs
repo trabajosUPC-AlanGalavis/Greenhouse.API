@@ -36,9 +36,6 @@ public class SaveFormulaResource
     
     [Required]
     public float AmmoniumSulphate { get; set; }
-    
-    [Required]
-    public int CropId { get; set; }
 
     [Required] public int EmployeeId { get; set; }
 }
