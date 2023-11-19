@@ -9,4 +9,5 @@ public class CropResource
     public DateTime EndDate { get; set; }
     public bool State { get; set; }
     public string Phase { get; set; }
+    public int CompanyId { get; set; }
 }

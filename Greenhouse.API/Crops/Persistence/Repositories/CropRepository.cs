@@ -18,6 +18,13 @@ public class CropRepository : BaseRepository, ICropRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Crop>> ListByCompanyIdAsync(int companyId)
+    {
+        return await _context.Crops
+            .Where(p => p.CompanyId == companyId)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Crop crop)
     {
         crop.Phase = "Formula";

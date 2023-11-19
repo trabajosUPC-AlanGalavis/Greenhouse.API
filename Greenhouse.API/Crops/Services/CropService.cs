@@ -22,6 +22,11 @@ public class CropService : ICropService
         return await _cropRepository.ListAsync();
     }
 
+    public Task<IEnumerable<Crop>> ListByCompanyIdAsync(int companyId)
+    {
+        return _cropRepository.ListByCompanyIdAsync(companyId);
+    }
+
     public Task<Crop> GetByIdAsync(int cropId)
     {
         return _cropRepository.FindByIdAsync(cropId);

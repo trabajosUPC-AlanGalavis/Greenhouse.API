@@ -27,19 +27,28 @@ public class CropsController : ControllerBase
         var resources = _mapper.Map<IEnumerable<Crop>, IEnumerable<CropResource>>(crops);
 
         return resources;
+    }
+    
+    [HttpGet("{companyId}")]
+    public async Task<IEnumerable<CropResource>> GetAllByCompanyIdAsync(int companyId)
+    {
+        var crops = await _cropService.ListByCompanyIdAsync(companyId);
+        var resources = _mapper.Map<IEnumerable<Crop>, IEnumerable<CropResource>>(crops);
 
+        return resources;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> PostAsync()
+    [HttpPost("{companyId}")]
+    public async Task<IActionResult> PostAsync(int companyId)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
         
         var resource = new SaveCropResource();
-
+        
         var crop = _mapper.Map<SaveCropResource, Crop>(resource);
 
+        crop.CompanyId = companyId;
         var result = await _cropService.SaveAsync(crop);
 
         if (!result.Success)

@@ -6,6 +6,7 @@ namespace Greenhouse.API.Crops.Domain.Services;
 public interface ICropService
 {
     Task<IEnumerable<Crop>> ListAsync();
+    Task<IEnumerable<Crop>> ListByCompanyIdAsync(int companyId);
     //get by Id
     Task<Crop> GetByIdAsync(int cropId);
     Task<CropResponse> SaveAsync(Crop crop);
