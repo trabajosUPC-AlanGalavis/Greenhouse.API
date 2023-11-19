@@ -5,7 +5,13 @@ namespace Greenhouse.API.Crops.Resources;
 public class SaveFormulaResource
 {
     [Required]
-    public DateTime Date { get; set; }
+    public string Author { get; set; }
+    
+    //[Required]
+    //public TimeSpan Time { get; set; }
+    
+    //[Required]
+    //public DateOnly Date { get; set; }
     
     [Required]
     public float Hay { get; set; }
@@ -33,7 +39,6 @@ public class SaveFormulaResource
     
     [Required]
     public int CropId { get; set; }
-    
-    [Required]
-    public int EmployeeId { get; set; }
+
+    [Required] public int EmployeeId { get; set; }
 }

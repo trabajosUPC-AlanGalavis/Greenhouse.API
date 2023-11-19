@@ -20,12 +20,14 @@ public class FormulasController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public async Task<IEnumerable<FormulaResource>> GetAllAsync()
+    [HttpGet("{cropId}")]
+    public async Task<IActionResult> GetAsync(int cropId)
     {
-        var formulas = await _formulaService.ListAsync();
+        var formulas = await _formulaService.ListByCropIdAsync(cropId);
+    
         var resources = _mapper.Map<IEnumerable<Formula>, IEnumerable<FormulaResource>>(formulas);
-        return resources;
+    
+        return Ok(resources);
     }
     
     [HttpPost]

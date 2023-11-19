@@ -60,7 +60,19 @@ public class AppDbContext : DbContext
         builder.Entity<Formula>().ToTable("Formulas");
         builder.Entity<Formula>().HasKey(p => p.Id);
         builder.Entity<Formula>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Formula>().Property(p => p.Date).IsRequired();
+        builder.Entity<Formula>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder
+            .Entity<Formula>()
+            .Property(p => p.Date)
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<Formula>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<Formula>().Property(p => p.Hay).IsRequired();
         builder.Entity<Formula>().Property(p => p.Corn).IsRequired();
         builder.Entity<Formula>().Property(p => p.Guano).IsRequired();
