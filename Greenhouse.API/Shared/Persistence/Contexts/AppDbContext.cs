@@ -35,18 +35,6 @@ public class AppDbContext : DbContext
         builder.Entity<User>().Property(p => p.FirstName).IsRequired();
         builder.Entity<User>().Property(p => p.LastName).IsRequired();
         
-        // Phases
-        
-        builder.Entity<Phase>().ToTable("Phases");
-        builder.Entity<Phase>().HasKey(p => p.Id);
-        builder.Entity<Phase>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Phase>().Property(p => p.Name).IsRequired().HasMaxLength(250);
-        // Relationships
-        builder.Entity<Phase>()
-            .HasMany(p => p.Crops)
-            .WithOne(p => p.Phase)
-            .HasForeignKey(p => p.PhaseId);
-        
         // Crops
         
         builder.Entity<Crop>().ToTable("Crops");
