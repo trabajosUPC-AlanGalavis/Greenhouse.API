@@ -6,10 +6,9 @@ public class Crop
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public bool State { get; set; }
+    public string Phase { get; set; }
     
     // Relationships
-    public int PhaseId { get; set; }
-    public Phase Phase { get; set; }
     public IList<Formula> Formulas { get; set; } = new List<Formula>();
     public IList<PreparationArea> PreparationAreas { get; set; } = new List<PreparationArea>();
     public IList<Bunker> Bunkers { get; set; } = new List<Bunker>();

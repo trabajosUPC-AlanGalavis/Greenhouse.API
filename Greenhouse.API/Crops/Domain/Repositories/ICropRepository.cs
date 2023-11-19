@@ -8,7 +8,6 @@ public interface ICropRepository
     Task AddAsync(Crop crop);
     Task<Crop> FindByIdAsync(int cropId);
     Task<Crop> FindByStateAsync(bool state);
-    Task<IEnumerable<Crop>> FindByPhaseIdAsync(int phaseId);
     void Update(Crop crop);
     void Remove(Crop crop);
 }

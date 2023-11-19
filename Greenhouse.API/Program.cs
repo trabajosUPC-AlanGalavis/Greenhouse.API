@@ -39,9 +39,6 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Crop
 builder.Services.AddScoped<ICropRepository,CropRepository>();
 builder.Services.AddScoped<ICropService, CropService>();
-// Crop phase
-builder.Services.AddScoped<IPhaseRepository,PhaseRepository>();
-builder.Services.AddScoped<IPhaseService, PhaseService>();
 // Formula
 builder.Services.AddScoped<IFormulaRepository,FormulaRepository>();
 builder.Services.AddScoped<IFormulaService, FormulaService>();

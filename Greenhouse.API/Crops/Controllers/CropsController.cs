@@ -31,10 +31,12 @@ public class CropsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] SaveCropResource resource)
+    public async Task<IActionResult> PostAsync()
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
+        
+        var resource = new SaveCropResource();
 
         var crop = _mapper.Map<SaveCropResource, Crop>(resource);
 

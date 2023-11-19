@@ -8,7 +8,6 @@ namespace Greenhouse.API.Shared.Persistence.Contexts;
 public class AppDbContext : DbContext
 {
     public DbSet<Crop> Crops { get; set; }
-    public DbSet<Phase> Phases { get; set; }
     public DbSet<Formula> Formulas { get; set; }
     public DbSet<PreparationArea> PreparationAreas { get; set; }
     public DbSet<Bunker> Bunkers { get; set; }
@@ -25,18 +24,6 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(builder);
         
-        // Phases
-        
-        builder.Entity<Phase>().ToTable("Phases");
-        builder.Entity<Phase>().HasKey(p => p.Id);
-        builder.Entity<Phase>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Phase>().Property(p => p.Name).IsRequired().HasMaxLength(250);
-        // Relationships
-        builder.Entity<Phase>()
-            .HasMany(p => p.Crops)
-            .WithOne(p => p.Phase)
-            .HasForeignKey(p => p.PhaseId);
-        
         // Crops
         
         builder.Entity<Crop>().ToTable("Crops");
@@ -45,6 +32,7 @@ public class AppDbContext : DbContext
         builder.Entity<Crop>().Property(p => p.StartDate).IsRequired();
         builder.Entity<Crop>().Property(p => p.EndDate).IsRequired();
         builder.Entity<Crop>().Property(p => p.State).IsRequired();
+        builder.Entity<Crop>().Property(p => p.Phase).IsRequired();
         // Relationships
         builder.Entity<Crop>()
             .HasMany(p => p.Formulas)
