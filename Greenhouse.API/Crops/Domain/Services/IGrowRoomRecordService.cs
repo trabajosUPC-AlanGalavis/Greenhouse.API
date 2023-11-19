@@ -7,6 +7,7 @@ public interface IGrowRoomRecordService
 {
     Task<IEnumerable<GrowRoomRecord>> ListAsync();
     Task<IEnumerable<GrowRoomRecord>> ListByCropIdAsync(int cropId);
+    Task<IEnumerable<GrowRoomRecord>> ListByCropIdAndProcessTypeAsync(int cropId, string processType);
     Task<IEnumerable<GrowRoomRecord>> ListByEmployeeIdAsync(int employeeId);
     Task<GrowRoomRecordResponse> SaveAsync(GrowRoomRecord growRoomRecord);
     Task<GrowRoomRecordResponse> UpdateAsync(int growRoomRecordId, GrowRoomRecord growRoomRecord);

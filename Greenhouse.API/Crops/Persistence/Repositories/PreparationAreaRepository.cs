@@ -16,13 +16,13 @@ public class PreparationAreaRepository : BaseRepository, IPreparationAreaReposit
     public async Task<IEnumerable<PreparationArea>> ListAsync()
     {
         return await _context.PreparationAreas
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
 
     public async Task AddAsync(PreparationArea preparationArea)
     {
+        var currentDate = DateTime.Now;
+        preparationArea.Day = currentDate.Day - preparationArea.Date.Day + 1;
         await _context.PreparationAreas.AddAsync(preparationArea);
     }
 

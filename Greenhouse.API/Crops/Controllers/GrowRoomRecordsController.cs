@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Greenhouse.API.Crops.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/v1/crops/{cropId}/[controller]")]
+[Tags("Crops Grow Room Records")]
 public class GrowRoomRecordsController : ControllerBase
 {
     private readonly IGrowRoomRecordService _growRoomRecordService;
@@ -20,21 +21,23 @@ public class GrowRoomRecordsController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public async Task<IEnumerable<GrowRoomRecordResource>> GetAllAsync()
+    [HttpGet("{cropPhase}")]
+    public async Task<IEnumerable<GrowRoomRecordResource>> GetAllAsync(int cropId, string cropPhase)
     {
-        var growRoomRecords = await _growRoomRecordService.ListAsync();
+        var growRoomRecords = await _growRoomRecordService.ListByCropIdAndProcessTypeAsync(cropId, cropPhase);
         var resources = _mapper.Map<IEnumerable<GrowRoomRecord>, IEnumerable<GrowRoomRecordResource>>(growRoomRecords);
         return resources;
     }
     
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] SaveGrowRoomRecordResource resource)
+    public async Task<IActionResult> PostAsync(int cropId,[FromBody] SaveGrowRoomRecordResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var growRoomRecord = _mapper.Map<SaveGrowRoomRecordResource, GrowRoomRecord>(resource);
+        
+        growRoomRecord.CropId = cropId;
     
         var result = await _growRoomRecordService.SaveAsync(growRoomRecord);
     
@@ -47,12 +50,14 @@ public class GrowRoomRecordsController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveGrowRoomRecordResource resource)
+    public async Task<IActionResult> PutAsync(int id, int cropId, [FromBody] SaveGrowRoomRecordResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var growRoomRecord = _mapper.Map<SaveGrowRoomRecordResource, GrowRoomRecord>(resource);
+        
+        growRoomRecord.CropId = cropId;
     
         var result = await _growRoomRecordService.UpdateAsync(id, growRoomRecord);
     
@@ -65,7 +70,7 @@ public class GrowRoomRecordsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id, int cropId)
     {
         var result = await _growRoomRecordService.DeleteAsync(id);
 
