@@ -29,8 +29,9 @@ public class CropRepository : BaseRepository, ICropRepository
     {
         crop.Phase = "Formula";
         crop.State = true;
-        crop.StartDate = DateTime.Now;
-        crop.EndDate = DateTime.Now;
+        var currentDate = DateTime.Now;
+        crop.StartDate = DateOnly.FromDateTime(currentDate);
+        crop.EndDate = DateOnly.FromDateTime(currentDate);
         await _context.Crops.AddAsync(crop);
     }
 
@@ -74,7 +75,8 @@ public class CropRepository : BaseRepository, ICropRepository
                 break;
             case "Harvest":
                 crop.State = false;
-                crop.EndDate = DateTime.Now;
+                var currentDate = DateTime.Now;
+                crop.EndDate = DateOnly.FromDateTime(currentDate);
                 break;
         }
         _context.Crops.Update(crop);
