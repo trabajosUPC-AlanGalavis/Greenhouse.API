@@ -1,5 +1,6 @@
 using Greenhouse.API.Crops.Domain.Models;
 using Greenhouse.API.Profiles.Domain.Models;
+using Greenhouse.API.Security.Domain.Models;
 using Greenhouse.API.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ public class AppDbContext : DbContext
     public DbSet<GrowRoomRecord> GrowRoomRecords { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
+    
+    public DbSet<User> Users { get; set; }
 
     public AppDbContext(DbContextOptions options) : base(options)
     {
@@ -23,6 +26,26 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        
+        // Constraints
+        builder.Entity<User>().ToTable("Users");
+        builder.Entity<User>().HasKey(p => p.Id);
+        builder.Entity<User>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(p => p.Username).IsRequired().HasMaxLength(30);
+        builder.Entity<User>().Property(p => p.FirstName).IsRequired();
+        builder.Entity<User>().Property(p => p.LastName).IsRequired();
+        
+        // Phases
+        
+        builder.Entity<Phase>().ToTable("Phases");
+        builder.Entity<Phase>().HasKey(p => p.Id);
+        builder.Entity<Phase>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Phase>().Property(p => p.Name).IsRequired().HasMaxLength(250);
+        // Relationships
+        builder.Entity<Phase>()
+            .HasMany(p => p.Crops)
+            .WithOne(p => p.Phase)
+            .HasForeignKey(p => p.PhaseId);
         
         // Crops
         
