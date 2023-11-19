@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Greenhouse.API.Crops.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/v1/{cropId}/[controller]")]
+[Tags("Crops Tunnel")]
 public class TunnelsController : ControllerBase
 {
     private readonly ITunnelService _tunnelService;
@@ -20,7 +21,7 @@ public class TunnelsController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet("{cropId}")]
+    [HttpGet]
     public async Task<IEnumerable<TunnelResource>> GetAllAsync(int cropId)
     {
         var tunnels = await _tunnelService.ListByCropIdAsync(cropId);
@@ -29,12 +30,14 @@ public class TunnelsController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] SaveTunnelResource resource)
+    public async Task<IActionResult> PostAsync(int cropId,[FromBody] SaveTunnelResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var tunnel = _mapper.Map<SaveTunnelResource, Tunnel>(resource);
+        
+        tunnel.CropId = cropId;
     
         var result = await _tunnelService.SaveAsync(tunnel);
     
@@ -47,12 +50,14 @@ public class TunnelsController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveTunnelResource resource)
+    public async Task<IActionResult> PutAsync(int id, int cropId,[FromBody] SaveTunnelResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var tunnel = _mapper.Map<SaveTunnelResource, Tunnel>(resource);
+        
+        tunnel.CropId = cropId;
     
         var result = await _tunnelService.UpdateAsync(id, tunnel);
     
@@ -65,7 +70,7 @@ public class TunnelsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id, int cropId)
     {
         var result = await _tunnelService.DeleteAsync(id);
 
