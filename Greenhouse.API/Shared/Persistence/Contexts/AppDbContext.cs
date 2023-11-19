@@ -221,7 +221,7 @@ public class AppDbContext : DbContext
         builder.Entity<Employee>()
             .HasMany(p => p.PreparationAreas)
             .WithOne(p => p.Employee)
-            .HasForeignKey(p => p.CropId);
+            .HasForeignKey(p => p.EmployeeId);
         builder.Entity<Employee>()
             .HasMany(p => p.Bunkers)
             .WithOne(p => p.Employee)
