@@ -42,6 +42,34 @@ public class CropRepository : BaseRepository, ICropRepository
 
     public void Update(Crop crop)
     {
+        switch (crop.Phase)
+        {
+            case "Formula":
+                crop.Phase = "Preparation Area";
+                break;
+            case "Preparation Area":
+                crop.Phase = "Bunker";
+                break;
+            case "Bunker":
+                crop.Phase = "Tunnel";
+                break;
+            case "Tunnel":
+                crop.Phase = "Incubation";
+                break;
+            case "Incubation":
+                crop.Phase = "Casing";
+                break;
+            case "Casing":
+                crop.Phase = "Induction";
+                break;
+            case "Induction":
+                crop.Phase = "Harvest";
+                break;
+            case "Harvest":
+                crop.State = false;
+                crop.EndDate = DateTime.Now;
+                break;
+        }
         _context.Crops.Update(crop);
     }
 

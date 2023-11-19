@@ -50,14 +50,17 @@ public class CropsController : ControllerBase
         return Ok(cropResource);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCropResource resource)
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchAsync(int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
 
-        var crop = _mapper.Map<SaveCropResource, Crop>(resource);
+        //var resource = new SaveCropResource();
 
+        //var crop = _mapper.Map<SaveCropResource, Crop>(resource);
+
+        var crop = await _cropService.GetByIdAsync(id);
         var result = await _cropService.UpdateAsync(id, crop);
 
         if (!result.Success)

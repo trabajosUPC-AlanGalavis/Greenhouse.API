@@ -22,9 +22,9 @@ public class CropService : ICropService
         return await _cropRepository.ListAsync();
     }
 
-    public async Task<Crop> ListByStateAsync(bool state)
+    public Task<Crop> GetByIdAsync(int cropId)
     {
-        return await _cropRepository.FindByStateAsync(state);
+        return _cropRepository.FindByIdAsync(cropId);
     }
 
     public async Task<CropResponse> SaveAsync(Crop crop)
