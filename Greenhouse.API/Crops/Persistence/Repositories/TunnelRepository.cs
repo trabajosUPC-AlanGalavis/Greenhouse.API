@@ -16,21 +16,20 @@ public class TunnelRepository : BaseRepository, ITunnelRepository
     public async Task<IEnumerable<Tunnel>> ListAsync()
     {
         return await _context.Tunnels
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
 
     public async Task AddAsync(Tunnel tunnel)
     {
+        var currentDate = DateTime.Now;
+        tunnel.Day = currentDate.Day - tunnel.Date.Day + 1;
+        tunnel.AverageThermocouple = (tunnel.ThermocoupleOne + tunnel.ThermocoupleTwo + tunnel.ThermocoupleThree) / 3;
         await _context.Tunnels.AddAsync(tunnel);
     }
 
     public async Task<Tunnel> FindByIdAsync(int tunnelId)
     {
         return await _context.Tunnels
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .FirstOrDefaultAsync(p => p.Id == tunnelId);
         
     }
@@ -39,8 +38,6 @@ public class TunnelRepository : BaseRepository, ITunnelRepository
     {
         return await _context.Tunnels
             .Where(p => p.CropId == cropId)
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
     

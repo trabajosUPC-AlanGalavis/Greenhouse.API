@@ -5,7 +5,10 @@ namespace Greenhouse.API.Crops.Resources;
 public class FormulaResource
 {
     public int Id { get; set; }
-    public DateTime Date { get; set; }
+    public string Author { get; set; }
+    public int Day { get; set; }
+    public TimeOnly Time { get; set; }
+    public DateOnly Date { get; set; }
     public float Hay { get; set; }
     public float Corn { get; set; }
     public float Guano { get; set; }
@@ -14,6 +17,5 @@ public class FormulaResource
     public float Gypsum { get; set; }
     public float Urea { get; set; }
     public float AmmoniumSulphate { get; set; }
-    public CropResource Crop { get; set; }
-    public EmployeeResource Employee { get; set; }
+    public int CropId { get; set; }
 }

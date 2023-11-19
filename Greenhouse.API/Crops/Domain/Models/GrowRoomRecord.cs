@@ -1,3 +1,4 @@
+using Greenhouse.API.Crops.Domain.Repositories;
 using Greenhouse.API.Profiles.Domain.Models;
 
 namespace Greenhouse.API.Crops.Domain.Models;
@@ -5,7 +6,10 @@ namespace Greenhouse.API.Crops.Domain.Models;
 public class GrowRoomRecord
 {
     public int Id { get; set; }
-    public DateTime Date { get; set; }
+    public string? Author { get; set; }
+    public int Day { get; set; }
+    public DateOnly Date { get; set; }
+    public TimeOnly Time { get; set; }
     public int GrowRoom { get; set; }
     public float AirTemperature { get; set; }
     public float CompostTemperature { get; set; }
@@ -13,12 +17,22 @@ public class GrowRoomRecord
     public float AirHumidity { get; set; }
     public float Setting { get; set; }
     public string ProcessType { get; set; }
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
     
     // Relationships
     public int CropId { get; set; }
-    public Crop Crop { get; set; }
+    public Crop? Crop { get; set; }
     public int EmployeeId { get; set; }
-    public Employee Employee { get; set; }
+    public Employee? Employee { get; set; }
+    
+    public GrowRoomRecord()
+    {
+        var currentDateTime = DateTime.Now;
+        var currentDate = DateOnly.FromDateTime(currentDateTime);
+        var currentTime = TimeOnly.FromDateTime(currentDateTime);
+        Date = currentDate;
+        Time = currentTime;
+        ProcessType = "Incubation";
+    }
     
 }

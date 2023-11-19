@@ -9,7 +9,6 @@ public class ModelToResourceProfile : Profile
 {
     public ModelToResourceProfile()
     {
-        CreateMap<Phase, PhaseResource>();
         CreateMap<Crop, CropResource>();
         CreateMap<Formula, FormulaResource>();
         CreateMap<PreparationArea, PreparationAreaResource>();

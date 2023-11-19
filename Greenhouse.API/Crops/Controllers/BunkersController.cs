@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Greenhouse.API.Crops.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/v1/crops/{cropId}/[controller]")]
+[Tags("Crops Bunkers")]
 public class BunkersController : ControllerBase
 {
     private readonly IBunkerService _bunkerService;
@@ -21,20 +22,22 @@ public class BunkersController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IEnumerable<BunkerResource>> GetAllAsync()
+    public async Task<IEnumerable<BunkerResource>> GetAllAsync(int cropId)
     {
-        var bunkers = await _bunkerService.ListAsync();
+        var bunkers = await _bunkerService.ListByCropIdAsync(cropId);
         var resources = _mapper.Map<IEnumerable<Bunker>, IEnumerable<BunkerResource>>(bunkers);
         return resources;
     }
     
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] SaveBunkerResource resource)
+    public async Task<IActionResult> PostAsync(int cropId,[FromBody] SaveBunkerResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var bunker = _mapper.Map<SaveBunkerResource, Bunker>(resource);
+        
+        bunker.CropId = cropId;
     
         var result = await _bunkerService.SaveAsync(bunker);
     
@@ -47,12 +50,14 @@ public class BunkersController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveBunkerResource resource)
+    public async Task<IActionResult> PutAsync(int id, int cropId,[FromBody] SaveBunkerResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var bunker = _mapper.Map<SaveBunkerResource, Bunker>(resource);
+        
+        bunker.CropId = cropId;
     
         var result = await _bunkerService.UpdateAsync(id, bunker);
     
@@ -65,7 +70,7 @@ public class BunkersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id, int cropId)
     {
         var result = await _bunkerService.DeleteAsync(id);
 

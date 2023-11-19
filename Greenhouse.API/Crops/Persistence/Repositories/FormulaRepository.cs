@@ -16,21 +16,19 @@ public class FormulaRepository : BaseRepository, IFormulaRepository
     public async Task<IEnumerable<Formula>> ListAsync()
     {
         return await _context.Formulas
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
 
     public async Task AddAsync(Formula formula)
     {
+        var currentDate = DateTime.Now;
+        formula.Day = currentDate.Day - formula.Date.Day + 1;
         await _context.Formulas.AddAsync(formula);
     }
 
     public async Task<Formula> FindByIdAsync(int formulaId)
     {
         return await _context.Formulas
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .FirstOrDefaultAsync(p => p.Id == formulaId);
         
     }
@@ -39,8 +37,6 @@ public class FormulaRepository : BaseRepository, IFormulaRepository
     {
         return await _context.Formulas
             .Where(p => p.CropId == cropId)
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
     
@@ -48,8 +44,6 @@ public class FormulaRepository : BaseRepository, IFormulaRepository
     {
         return await _context.Formulas
             .Where(p => p.EmployeeId == employeeId)
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
 

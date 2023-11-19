@@ -16,21 +16,20 @@ public class BunkerRepository : BaseRepository, IBunkerRepository
     public async Task<IEnumerable<Bunker>> ListAsync()
     {
         return await _context.Bunkers
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
 
     public async Task AddAsync(Bunker bunker)
     {
+        var currentDate = DateTime.Now;
+        bunker.Day = currentDate.Day - bunker.Date.Day + 1;
+        bunker.AverageThermocouple = (bunker.ThermocoupleOne + bunker.ThermocoupleTwo + bunker.ThermocoupleThree) / 3;
         await _context.Bunkers.AddAsync(bunker);
     }
 
     public async Task<Bunker> FindByIdAsync(int bunkerId)
     {
         return await _context.Bunkers
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .FirstOrDefaultAsync(p => p.Id == bunkerId);
         
     }
@@ -39,8 +38,6 @@ public class BunkerRepository : BaseRepository, IBunkerRepository
     {
         return await _context.Bunkers
             .Where(p => p.CropId == cropId)
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
     

@@ -8,7 +8,6 @@ namespace Greenhouse.API.Shared.Persistence.Contexts;
 public class AppDbContext : DbContext
 {
     public DbSet<Crop> Crops { get; set; }
-    public DbSet<Phase> Phases { get; set; }
     public DbSet<Formula> Formulas { get; set; }
     public DbSet<PreparationArea> PreparationAreas { get; set; }
     public DbSet<Bunker> Bunkers { get; set; }
@@ -25,18 +24,6 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(builder);
         
-        // Phases
-        
-        builder.Entity<Phase>().ToTable("Phases");
-        builder.Entity<Phase>().HasKey(p => p.Id);
-        builder.Entity<Phase>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Phase>().Property(p => p.Name).IsRequired().HasMaxLength(250);
-        // Relationships
-        builder.Entity<Phase>()
-            .HasMany(p => p.Crops)
-            .WithOne(p => p.Phase)
-            .HasForeignKey(p => p.PhaseId);
-        
         // Crops
         
         builder.Entity<Crop>().ToTable("Crops");
@@ -45,6 +32,7 @@ public class AppDbContext : DbContext
         builder.Entity<Crop>().Property(p => p.StartDate).IsRequired();
         builder.Entity<Crop>().Property(p => p.EndDate).IsRequired();
         builder.Entity<Crop>().Property(p => p.State).IsRequired();
+        builder.Entity<Crop>().Property(p => p.Phase).IsRequired();
         // Relationships
         builder.Entity<Crop>()
             .HasMany(p => p.Formulas)
@@ -72,7 +60,20 @@ public class AppDbContext : DbContext
         builder.Entity<Formula>().ToTable("Formulas");
         builder.Entity<Formula>().HasKey(p => p.Id);
         builder.Entity<Formula>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Formula>().Property(p => p.Date).IsRequired();
+        builder.Entity<Formula>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<Formula>().Property(p => p.Day).IsRequired();
+        builder
+            .Entity<Formula>()
+            .Property(p => p.Date)
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<Formula>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<Formula>().Property(p => p.Hay).IsRequired();
         builder.Entity<Formula>().Property(p => p.Corn).IsRequired();
         builder.Entity<Formula>().Property(p => p.Guano).IsRequired();
@@ -87,7 +88,18 @@ public class AppDbContext : DbContext
         builder.Entity<PreparationArea>().ToTable("PreparationAreas");
         builder.Entity<PreparationArea>().HasKey(p => p.Id);
         builder.Entity<PreparationArea>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<PreparationArea>().Property(p => p.Date).IsRequired();
+        builder.Entity<PreparationArea>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<PreparationArea>().Property(p => p.Day).IsRequired();
+        builder.Entity<PreparationArea>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<PreparationArea>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<PreparationArea>().Property(p => p.Activities).IsRequired();
         builder.Entity<PreparationArea>().Property(p => p.Temperature).IsRequired();
         builder.Entity<PreparationArea>().Property(p => p.Comment);
@@ -97,7 +109,18 @@ public class AppDbContext : DbContext
         builder.Entity<Bunker>().ToTable("Bunkers");
         builder.Entity<Bunker>().HasKey(p => p.Id);
         builder.Entity<Bunker>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Bunker>().Property(p => p.Date).IsRequired();
+        builder.Entity<Bunker>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<Bunker>().Property(p => p.Day).IsRequired();
+        builder.Entity<Bunker>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<Bunker>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<Bunker>().Property(p => p.ThermocoupleOne).IsRequired();
         builder.Entity<Bunker>().Property(p => p.ThermocoupleTwo).IsRequired();
         builder.Entity<Bunker>().Property(p => p.ThermocoupleThree).IsRequired();
@@ -110,7 +133,18 @@ public class AppDbContext : DbContext
         builder.Entity<Tunnel>().ToTable("Tunnels");
         builder.Entity<Tunnel>().HasKey(p => p.Id);
         builder.Entity<Tunnel>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Tunnel>().Property(p => p.Date).IsRequired();
+        builder.Entity<Tunnel>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<Tunnel>().Property(p => p.Day).IsRequired();
+        builder.Entity<Tunnel>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<Tunnel>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<Tunnel>().Property(p => p.ThermocoupleOne).IsRequired();
         builder.Entity<Tunnel>().Property(p => p.ThermocoupleTwo).IsRequired();
         builder.Entity<Tunnel>().Property(p => p.ThermocoupleThree).IsRequired();
@@ -125,7 +159,18 @@ public class AppDbContext : DbContext
         builder.Entity<GrowRoomRecord>().ToTable("GrowRoomRecords");
         builder.Entity<GrowRoomRecord>().HasKey(p => p.Id);
         builder.Entity<GrowRoomRecord>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<GrowRoomRecord>().Property(p => p.Date).IsRequired();
+        builder.Entity<GrowRoomRecord>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<GrowRoomRecord>().Property(p => p.Day).IsRequired();
+        builder.Entity<GrowRoomRecord>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<GrowRoomRecord>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<GrowRoomRecord>().Property(p => p.GrowRoom).IsRequired();
         builder.Entity<GrowRoomRecord>().Property(p => p.AirTemperature).IsRequired();
         builder.Entity<GrowRoomRecord>().Property(p => p.CompostTemperature).IsRequired();

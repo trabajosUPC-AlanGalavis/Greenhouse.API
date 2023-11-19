@@ -5,7 +5,10 @@ namespace Greenhouse.API.Crops.Resources;
 public class GrowRoomRecordResource
 {
     public int Id { get; set; }
-    public DateTime Date { get; set; }
+    public string Author { get; set; }
+    public int Day { get; set; }
+    public DateOnly Date { get; set; }
+    public TimeOnly Time { get; set; }
     public int GrowRoom { get; set; }
     public float AirTemperature { get; set; }
     public float CompostTemperature { get; set; }
@@ -14,6 +17,5 @@ public class GrowRoomRecordResource
     public float Setting { get; set; }
     public string ProcessType { get; set; }
     public string Comment { get; set; }
-    public CropResource Crop { get; set; }
-    public EmployeeResource Employee { get; set; }
+    public int CropId { get; set; }
 }

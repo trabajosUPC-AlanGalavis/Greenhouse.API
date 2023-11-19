@@ -28,16 +28,32 @@ public class GrowRoomRecordService: IGrowRoomRecordService
     {
         return await _growRoomRecordRepository.FindByCropIdAsync(cropId);
     }
-    
+
+    public async Task<IEnumerable<GrowRoomRecord>> ListByCropIdAndProcessTypeAsync(int cropId, string processType)
+    {
+        return await _growRoomRecordRepository.FindByCropIdAndProcessTypeAsync(cropId, processType);
+    }
+
     public async Task<IEnumerable<GrowRoomRecord>> ListByEmployeeIdAsync(int employeeId)
     {
         return await _growRoomRecordRepository.FindByEmployeeIdAsync(employeeId);
     }
+    
 
     public async Task<GrowRoomRecordResponse> SaveAsync(GrowRoomRecord growRoomRecord)
     {
         try
         {
+            // Validate CropId
+            
+            var existingCrop = await _cropRepository.FindByIdAsync(growRoomRecord.CropId);
+            
+            // ProcessType can Only be "Incubation", "Casing", "Induction", "Harvest"
+            if (existingCrop.Phase != "Incubation" && existingCrop.Phase != "Casing" && existingCrop.Phase != "Induction" && existingCrop.Phase != "Harvest")
+                return new GrowRoomRecordResponse("Invalid Process Type");
+            
+            growRoomRecord.ProcessType = existingCrop.Phase;
+            
             // Add Formula
             await _growRoomRecordRepository.AddAsync(growRoomRecord);
             

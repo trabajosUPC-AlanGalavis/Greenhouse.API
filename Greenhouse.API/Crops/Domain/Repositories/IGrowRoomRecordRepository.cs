@@ -11,5 +11,6 @@ public interface IGrowRoomRecordRepository
     void Remove(GrowRoomRecord growRoomRecord);
     Task<GrowRoomRecord> FindByIdAsync(int growRoomRecordId);
     Task<IEnumerable<GrowRoomRecord>> FindByCropIdAsync(int cropId);
+    Task<IEnumerable<GrowRoomRecord>> FindByCropIdAndProcessTypeAsync(int cropId, string processType);
     Task<IEnumerable<GrowRoomRecord>> FindByEmployeeIdAsync(int employeeId);
 }
