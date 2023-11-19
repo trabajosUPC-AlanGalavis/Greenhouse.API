@@ -1,5 +1,6 @@
 using Greenhouse.API.Crops.Domain.Models;
 using Greenhouse.API.Profiles.Domain.Models;
+using Greenhouse.API.Security.Domain.Models;
 using Greenhouse.API.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ public class AppDbContext : DbContext
     public DbSet<GrowRoomRecord> GrowRoomRecords { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
+    
+    public DbSet<User> Users { get; set; }
 
     public AppDbContext(DbContextOptions options) : base(options)
     {
@@ -23,6 +26,14 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        
+        // Constraints
+        builder.Entity<User>().ToTable("Users");
+        builder.Entity<User>().HasKey(p => p.Id);
+        builder.Entity<User>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(p => p.Username).IsRequired().HasMaxLength(30);
+        builder.Entity<User>().Property(p => p.FirstName).IsRequired();
+        builder.Entity<User>().Property(p => p.LastName).IsRequired();
         
         // Crops
         
@@ -210,7 +221,7 @@ public class AppDbContext : DbContext
         builder.Entity<Employee>()
             .HasMany(p => p.PreparationAreas)
             .WithOne(p => p.Employee)
-            .HasForeignKey(p => p.CropId);
+            .HasForeignKey(p => p.EmployeeId);
         builder.Entity<Employee>()
             .HasMany(p => p.Bunkers)
             .WithOne(p => p.Employee)

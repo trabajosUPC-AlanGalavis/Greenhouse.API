@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Greenhouse.API.Crops.Controllers;
 
 [ApiController]
-[Route("/api/v1/{cropId}/[controller]")]
+[Route("/api/v1/crops/{cropId}/[controller]")]
 [Tags("Crops Preparation Areas")]
 public class PreparationAreasController : ControllerBase
 {
