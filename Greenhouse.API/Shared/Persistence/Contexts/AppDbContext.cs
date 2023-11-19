@@ -109,7 +109,18 @@ public class AppDbContext : DbContext
         builder.Entity<Bunker>().ToTable("Bunkers");
         builder.Entity<Bunker>().HasKey(p => p.Id);
         builder.Entity<Bunker>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Bunker>().Property(p => p.Date).IsRequired();
+        builder.Entity<Bunker>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<Bunker>().Property(p => p.Day).IsRequired();
+        builder.Entity<Bunker>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<Bunker>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<Bunker>().Property(p => p.ThermocoupleOne).IsRequired();
         builder.Entity<Bunker>().Property(p => p.ThermocoupleTwo).IsRequired();
         builder.Entity<Bunker>().Property(p => p.ThermocoupleThree).IsRequired();

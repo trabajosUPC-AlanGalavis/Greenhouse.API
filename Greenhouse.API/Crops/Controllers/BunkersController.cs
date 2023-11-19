@@ -20,10 +20,10 @@ public class BunkersController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public async Task<IEnumerable<BunkerResource>> GetAllAsync()
+    [HttpGet("{cropId}")]
+    public async Task<IEnumerable<BunkerResource>> GetAllAsync(int cropId)
     {
-        var bunkers = await _bunkerService.ListAsync();
+        var bunkers = await _bunkerService.ListByCropIdAsync(cropId);
         var resources = _mapper.Map<IEnumerable<Bunker>, IEnumerable<BunkerResource>>(bunkers);
         return resources;
     }
