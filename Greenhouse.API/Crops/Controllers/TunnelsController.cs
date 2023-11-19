@@ -20,10 +20,10 @@ public class TunnelsController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public async Task<IEnumerable<TunnelResource>> GetAllAsync()
+    [HttpGet("{cropId}")]
+    public async Task<IEnumerable<TunnelResource>> GetAllAsync(int cropId)
     {
-        var tunnels = await _tunnelService.ListAsync();
+        var tunnels = await _tunnelService.ListByCropIdAsync(cropId);
         var resources = _mapper.Map<IEnumerable<Tunnel>, IEnumerable<TunnelResource>>(tunnels);
         return resources;
     }
