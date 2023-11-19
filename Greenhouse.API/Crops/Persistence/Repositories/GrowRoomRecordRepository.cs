@@ -16,21 +16,19 @@ public class GrowRoomRecordRepository : BaseRepository, IGrowRoomRecordRepositor
     public async Task<IEnumerable<GrowRoomRecord>> ListAsync()
     {
         return await _context.GrowRoomRecords
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
 
     public async Task AddAsync(GrowRoomRecord growRoomRecord)
     {
+        var currentDate = DateTime.Now;
+        growRoomRecord.Day = currentDate.Day - growRoomRecord.Date.Day + 1;
         await _context.GrowRoomRecords.AddAsync(growRoomRecord);
     }
 
     public async Task<GrowRoomRecord> FindByIdAsync(int growRoomRecordId)
     {
         return await _context.GrowRoomRecords
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .FirstOrDefaultAsync(p => p.Id == growRoomRecordId);
             
     }
@@ -39,11 +37,16 @@ public class GrowRoomRecordRepository : BaseRepository, IGrowRoomRecordRepositor
     {
         return await _context.GrowRoomRecords
             .Where(p => p.CropId == cropId)
-            .Include(p => p.Crop)
-            .Include(p => p.Employee)
             .ToListAsync();
     }
-    
+
+    public async Task<IEnumerable<GrowRoomRecord>> FindByCropIdAndProcessTypeAsync(int cropId, string processType)
+    {
+        return await _context.GrowRoomRecords
+            .Where(p => p.CropId == cropId && p.ProcessType == processType)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<GrowRoomRecord>> FindByEmployeeIdAsync(int employeeId)
     {
         return await _context.GrowRoomRecords

@@ -20,10 +20,10 @@ public class GrowRoomRecordsController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public async Task<IEnumerable<GrowRoomRecordResource>> GetAllAsync()
+    [HttpGet("{cropId}/{processType}")]
+    public async Task<IEnumerable<GrowRoomRecordResource>> GetAllAsync(int cropId, string processType)
     {
-        var growRoomRecords = await _growRoomRecordService.ListAsync();
+        var growRoomRecords = await _growRoomRecordService.ListByCropIdAndProcessTypeAsync(cropId, processType);
         var resources = _mapper.Map<IEnumerable<GrowRoomRecord>, IEnumerable<GrowRoomRecordResource>>(growRoomRecords);
         return resources;
     }

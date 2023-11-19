@@ -5,7 +5,7 @@ namespace Greenhouse.API.Crops.Resources;
 public class SaveGrowRoomRecordResource
 {
     [Required]
-    public DateTime Date { get; set; }
+    public string Author { get; set; }
     
     [Required]
     public int GrowRoom { get; set; }
@@ -24,9 +24,6 @@ public class SaveGrowRoomRecordResource
     
     [Required]
     public float Setting { get; set; }
-    
-    [Required]
-    public string ProcessType { get; set; }
 
     public string Comment { get; set; }
     

@@ -14,4 +14,5 @@ public class Crop
     public IList<Bunker> Bunkers { get; set; } = new List<Bunker>();
     public IList<Tunnel> Tunnels { get; set; } = new List<Tunnel>();
     public IList<GrowRoomRecord> GrowRoomRecords { get; set; } = new List<GrowRoomRecord>();
+    
 }

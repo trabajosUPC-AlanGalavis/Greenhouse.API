@@ -133,7 +133,18 @@ public class AppDbContext : DbContext
         builder.Entity<Tunnel>().ToTable("Tunnels");
         builder.Entity<Tunnel>().HasKey(p => p.Id);
         builder.Entity<Tunnel>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Tunnel>().Property(p => p.Date).IsRequired();
+        builder.Entity<Tunnel>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<Tunnel>().Property(p => p.Day).IsRequired();
+        builder.Entity<Tunnel>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<Tunnel>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<Tunnel>().Property(p => p.ThermocoupleOne).IsRequired();
         builder.Entity<Tunnel>().Property(p => p.ThermocoupleTwo).IsRequired();
         builder.Entity<Tunnel>().Property(p => p.ThermocoupleThree).IsRequired();
@@ -148,7 +159,18 @@ public class AppDbContext : DbContext
         builder.Entity<GrowRoomRecord>().ToTable("GrowRoomRecords");
         builder.Entity<GrowRoomRecord>().HasKey(p => p.Id);
         builder.Entity<GrowRoomRecord>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<GrowRoomRecord>().Property(p => p.Date).IsRequired();
+        builder.Entity<GrowRoomRecord>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<GrowRoomRecord>().Property(p => p.Day).IsRequired();
+        builder.Entity<GrowRoomRecord>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<GrowRoomRecord>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<GrowRoomRecord>().Property(p => p.GrowRoom).IsRequired();
         builder.Entity<GrowRoomRecord>().Property(p => p.AirTemperature).IsRequired();
         builder.Entity<GrowRoomRecord>().Property(p => p.CompostTemperature).IsRequired();
