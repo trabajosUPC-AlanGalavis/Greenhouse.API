@@ -25,7 +25,7 @@ public class SaveGrowRoomRecordResource
     [Required]
     public float Setting { get; set; }
 
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
     
     [Required]
     public int EmployeeId { get; set; }

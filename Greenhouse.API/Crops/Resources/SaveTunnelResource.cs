@@ -28,7 +28,7 @@ public class SaveTunnelResource
     [Required]
     public float Recirculation { get; set; }
     
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
     
     [Required]
     public int EmployeeId { get; set; }

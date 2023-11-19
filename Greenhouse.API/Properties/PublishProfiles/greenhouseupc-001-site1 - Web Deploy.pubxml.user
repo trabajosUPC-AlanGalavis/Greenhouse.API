@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword />
+    <History>True|2023-11-19T21:07:14.1952392Z;False|2023-11-19T16:06:43.9798056-05:00;False|2023-11-19T16:06:16.4448788-05:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>server=MYSQL5045.site4now.net%3buid=aa0d05_root%3bpwd=greenhouseupc23%3bdatabase=db_aa0d05_root</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>
