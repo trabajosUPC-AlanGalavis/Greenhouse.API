@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Greenhouse.API.Crops.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/v1/{cropId}/[controller]")]
+[Tags("Crops Preparation Areas")]
 public class PreparationAreasController : ControllerBase
 {
     private readonly IPreparationAreaService _preparationAreaService;
@@ -20,7 +21,7 @@ public class PreparationAreasController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet("{cropId}")]
+    [HttpGet]
     public async Task<IEnumerable<PreparationAreaResource>> GetAllAsync(int cropId)
     {
         var preparationAreas = await _preparationAreaService.ListByCropIdAsync(cropId);
@@ -29,12 +30,14 @@ public class PreparationAreasController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] SavePreparationAreaResource resource)
+    public async Task<IActionResult> PostAsync(int cropId,[FromBody] SavePreparationAreaResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var preparationArea = _mapper.Map<SavePreparationAreaResource, PreparationArea>(resource);
+        
+        preparationArea.CropId = cropId;
     
         var result = await _preparationAreaService.SaveAsync(preparationArea);
     
@@ -47,12 +50,14 @@ public class PreparationAreasController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SavePreparationAreaResource resource)
+    public async Task<IActionResult> PutAsync(int id, int cropId,[FromBody] SavePreparationAreaResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var preparationArea = _mapper.Map<SavePreparationAreaResource, PreparationArea>(resource);
+        
+        preparationArea.CropId = cropId;
     
         var result = await _preparationAreaService.UpdateAsync(id, preparationArea);
     
@@ -65,7 +70,7 @@ public class PreparationAreasController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id, int cropId)
     {
         var result = await _preparationAreaService.DeleteAsync(id);
 
