@@ -40,8 +40,12 @@ public class AppDbContext : DbContext
         builder.Entity<Crop>().ToTable("Crops");
         builder.Entity<Crop>().HasKey(p => p.Id);
         builder.Entity<Crop>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Crop>().Property(p => p.StartDate).IsRequired();
-        builder.Entity<Crop>().Property(p => p.EndDate).IsRequired();
+        builder.Entity<Crop>().Property(p => p.StartDate).IsRequired()
+            .HasConversion(v => v.ToLongDateString(), 
+                v => DateOnly.FromDateTime(DateTime.Parse(v)));
+        builder.Entity<Crop>().Property(p => p.EndDate).IsRequired()
+            .HasConversion(v => v.ToLongDateString(), 
+                v => DateOnly.FromDateTime(DateTime.Parse(v)));
         builder.Entity<Crop>().Property(p => p.State).IsRequired();
         builder.Entity<Crop>().Property(p => p.Phase).IsRequired();
         // Relationships
