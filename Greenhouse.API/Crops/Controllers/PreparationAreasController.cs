@@ -20,10 +20,10 @@ public class PreparationAreasController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public async Task<IEnumerable<PreparationAreaResource>> GetAllAsync()
+    [HttpGet("{cropId}")]
+    public async Task<IEnumerable<PreparationAreaResource>> GetAllAsync(int cropId)
     {
-        var preparationAreas = await _preparationAreaService.ListAsync();
+        var preparationAreas = await _preparationAreaService.ListByCropIdAsync(cropId);
         var resources = _mapper.Map<IEnumerable<PreparationArea>, IEnumerable<PreparationAreaResource>>(preparationAreas);
         return resources;
     }

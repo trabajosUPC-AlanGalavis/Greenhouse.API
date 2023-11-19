@@ -5,7 +5,7 @@ namespace Greenhouse.API.Crops.Resources;
 public class SavePreparationAreaResource
 {
     [Required]
-    public DateTime Date { get; set; }
+    public string Author { get; set; }
     
     [Required]
     public string Activities { get; set; }

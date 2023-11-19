@@ -61,6 +61,7 @@ public class AppDbContext : DbContext
         builder.Entity<Formula>().HasKey(p => p.Id);
         builder.Entity<Formula>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Formula>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<Formula>().Property(p => p.Day).IsRequired();
         builder
             .Entity<Formula>()
             .Property(p => p.Date)
@@ -87,7 +88,18 @@ public class AppDbContext : DbContext
         builder.Entity<PreparationArea>().ToTable("PreparationAreas");
         builder.Entity<PreparationArea>().HasKey(p => p.Id);
         builder.Entity<PreparationArea>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<PreparationArea>().Property(p => p.Date).IsRequired();
+        builder.Entity<PreparationArea>().Property(p => p.Author).IsRequired().HasMaxLength(250);
+        builder.Entity<PreparationArea>().Property(p => p.Day).IsRequired();
+        builder.Entity<PreparationArea>().Property(p => p.Date).IsRequired()
+            .HasConversion(
+                v => v.ToLongDateString(),
+                v => DateOnly.FromDateTime(DateTime.Parse(v))
+            );
+        builder.Entity<PreparationArea>().Property(p => p.Time).IsRequired()
+            .HasConversion(
+                v => v.ToString(),
+                v => TimeOnly.Parse(v)
+            );
         builder.Entity<PreparationArea>().Property(p => p.Activities).IsRequired();
         builder.Entity<PreparationArea>().Property(p => p.Temperature).IsRequired();
         builder.Entity<PreparationArea>().Property(p => p.Comment);
