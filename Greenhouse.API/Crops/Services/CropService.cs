@@ -10,13 +10,11 @@ public class CropService : ICropService
 {
     private readonly ICropRepository _cropRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPhaseRepository _phaseRepository;
 
-    public CropService(ICropRepository cropRepository, IUnitOfWork unitOfWork, IPhaseRepository phaseRepository)
+    public CropService(ICropRepository cropRepository, IUnitOfWork unitOfWork)
     {
         _cropRepository = cropRepository;
         _unitOfWork = unitOfWork;
-        _phaseRepository = phaseRepository;
     }
 
     public async Task<IEnumerable<Crop>> ListAsync()
@@ -24,14 +22,14 @@ public class CropService : ICropService
         return await _cropRepository.ListAsync();
     }
 
-    public async Task<IEnumerable<Crop>> ListByPhaseIdAsync(int phaseId)
+    public Task<IEnumerable<Crop>> ListByCompanyIdAsync(int companyId)
     {
-        return await _cropRepository.FindByPhaseIdAsync(phaseId);
+        return _cropRepository.ListByCompanyIdAsync(companyId);
     }
-    
-    public async Task<Crop> ListByStateAsync(bool state)
+
+    public Task<Crop> GetByIdAsync(int cropId)
     {
-        return await _cropRepository.FindByStateAsync(state);
+        return _cropRepository.FindByIdAsync(cropId);
     }
 
     public async Task<CropResponse> SaveAsync(Crop crop)
@@ -65,13 +63,6 @@ public class CropService : ICropService
 
         if (existingCrop == null)
             return new CropResponse("Crop not found.");
-
-        // Validate PhaseId
-
-        var existingPhase = await _phaseRepository.FindByIdAsync(crop.PhaseId);
-
-        if (existingPhase == null)
-            return new CropResponse("Invalid Phase");
         
         // Modify Fields
         existingCrop.StartDate= crop.StartDate;

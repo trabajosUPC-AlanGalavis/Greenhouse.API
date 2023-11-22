@@ -23,7 +23,7 @@ public class UsersController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("sing-in")]
+    [HttpPost("sign-in")]
     public async Task<IActionResult> Authenticate(AuthenticateRequest request)
     {
         var response = await _userService.Authenticate(request);
@@ -31,7 +31,7 @@ public class UsersController : ControllerBase
     }
     
     [AllowAnonymous]
-    [HttpPost("sing-up")]
+    [HttpPost("sign-up")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
         await _userService.RegisterAsync(request);

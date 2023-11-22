@@ -8,7 +8,6 @@ public class ResourceToModelProfile : Profile
 {
     public ResourceToModelProfile()
     {
-        CreateMap<SavePhaseResource, Phase>();
         CreateMap<SaveCropResource, Crop>();
         CreateMap<SaveFormulaResource, Formula>();
         CreateMap<SavePreparationAreaResource, PreparationArea>();

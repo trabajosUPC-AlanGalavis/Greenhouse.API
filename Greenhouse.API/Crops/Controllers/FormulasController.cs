@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Greenhouse.API.Crops.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/v1/crops/{cropId}/[controller]")]
+[Tags("Crops Formulas")]
 public class FormulasController : ControllerBase
 {
     private readonly IFormulaService _formulaService;
@@ -21,20 +22,24 @@ public class FormulasController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IEnumerable<FormulaResource>> GetAllAsync()
+    public async Task<IActionResult> GetAsync(int cropId)
     {
-        var formulas = await _formulaService.ListAsync();
+        var formulas = await _formulaService.ListByCropIdAsync(cropId);
+    
         var resources = _mapper.Map<IEnumerable<Formula>, IEnumerable<FormulaResource>>(formulas);
-        return resources;
+    
+        return Ok(resources);
     }
     
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] SaveFormulaResource resource)
+    public async Task<IActionResult> PostAsync(int cropId,[FromBody] SaveFormulaResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var formula = _mapper.Map<SaveFormulaResource, Formula>(resource);
+        
+        formula.CropId = cropId;
     
         var result = await _formulaService.SaveAsync(formula);
     
@@ -47,12 +52,14 @@ public class FormulasController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveFormulaResource resource)
+    public async Task<IActionResult> PutAsync(int id, int cropId, [FromBody] SaveFormulaResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
     
         var formula = _mapper.Map<SaveFormulaResource, Formula>(resource);
+        
+        formula.CropId = cropId;
     
         var result = await _formulaService.UpdateAsync(id, formula);
     

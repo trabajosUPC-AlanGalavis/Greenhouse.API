@@ -95,9 +95,6 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 // Crop
 builder.Services.AddScoped<ICropRepository,CropRepository>();
 builder.Services.AddScoped<ICropService, CropService>();
-// Crop phase
-builder.Services.AddScoped<IPhaseRepository,PhaseRepository>();
-builder.Services.AddScoped<IPhaseService, PhaseService>();
 // Formula
 builder.Services.AddScoped<IFormulaRepository,FormulaRepository>();
 builder.Services.AddScoped<IFormulaService, FormulaService>();
@@ -148,15 +145,8 @@ using (var context = scope.ServiceProvider.GetService<AppDbContext>())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("v1/swagger.json", "v1");
-        options.RoutePrefix = "swagger";
-    });
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 //Configure CORS
 app.UseCors(x => x

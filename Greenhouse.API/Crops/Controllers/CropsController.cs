@@ -27,17 +27,28 @@ public class CropsController : ControllerBase
         var resources = _mapper.Map<IEnumerable<Crop>, IEnumerable<CropResource>>(crops);
 
         return resources;
+    }
+    
+    [HttpGet("{companyId}")]
+    public async Task<IEnumerable<CropResource>> GetAllByCompanyIdAsync(int companyId)
+    {
+        var crops = await _cropService.ListByCompanyIdAsync(companyId);
+        var resources = _mapper.Map<IEnumerable<Crop>, IEnumerable<CropResource>>(crops);
 
+        return resources;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] SaveCropResource resource)
+    [HttpPost("{companyId}")]
+    public async Task<IActionResult> PostAsync(int companyId)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
-
+        
+        var resource = new SaveCropResource();
+        
         var crop = _mapper.Map<SaveCropResource, Crop>(resource);
 
+        crop.CompanyId = companyId;
         var result = await _cropService.SaveAsync(crop);
 
         if (!result.Success)
@@ -48,14 +59,17 @@ public class CropsController : ControllerBase
         return Ok(cropResource);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCropResource resource)
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchAsync(int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
 
-        var crop = _mapper.Map<SaveCropResource, Crop>(resource);
+        //var resource = new SaveCropResource();
 
+        //var crop = _mapper.Map<SaveCropResource, Crop>(resource);
+
+        var crop = await _cropService.GetByIdAsync(id);
         var result = await _cropService.UpdateAsync(id, crop);
 
         if (!result.Success)
