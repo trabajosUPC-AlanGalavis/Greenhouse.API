@@ -22,9 +22,9 @@ public class JwtHandler : IJwtHandler
     {
         // Generate Token for a valid period of 7 days
         var tokenHandler = new JwtSecurityTokenHandler();
-        Console.WriteLine($"token handler: {tokenHandler.TokenType}");
+
         var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-        Console.WriteLine($"Secret Key: {key}");
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
@@ -37,7 +37,7 @@ public class JwtHandler : IJwtHandler
                 SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        Console.WriteLine($"token: {token.Id}, {token.Issuer}, {token.SecurityKey?.ToString()}");
+
         return tokenHandler.WriteToken(token);
     }
 
